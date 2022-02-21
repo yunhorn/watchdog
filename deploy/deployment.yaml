@@ -19,7 +19,7 @@ spec:
           image: ghcr.io/liangyuanpeng/dingtalk-watchdog:v0.1.0
           imagePullPolicy: IfNotPresent
           ports:
-            - name: dingtalk-watchdog
+            - name: dingtalk
               protocol: TCP
               containerPort: 8181
           resources:
