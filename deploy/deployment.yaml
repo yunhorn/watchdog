@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dingtalk-watchdog
+  labels:
+    app: dingtalk-watchdog
+spec:
+  selector:
+    matchLabels:  
+      app: dingtalk-watchdog
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dingtalk-watchdog
+    spec:
+      containers:
+        - name: dingtalk-watchdog
+          image: ghcr.io/liangyuanpeng/dingtalk-watchdog:v0.1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: dingtalk-watchdog
+              protocol: TCP
+              containerPort: 8181
+          resources:
+            requests:
+              memory: 125Mi 
+            limits:
+              memory: 512Mi
+
+---

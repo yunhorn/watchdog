@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dingtalk-watchdog
+  labels:
+    app: dingtalk-watchdog
+spec:
+  ports:
+    - port: 8181
+      targetPort: 8181
+      name: dingtalk-watchdog
+  type: ClusterIP
+  selector:
+    app: dingtalk-watchdog
