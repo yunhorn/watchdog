@@ -5,4 +5,4 @@
 
 # 容器镜像  
 
-github.com/yunhorn/dingtalk-watchdog:v0.1.0
+ghcr.io/yunhorn/dingtalk-watchdog:v0.1.0
