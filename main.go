@@ -56,6 +56,7 @@ func main() {
 
 			if wf.Action != "" {
 				log.Println("action is", wf.Action)
+				log.Println("workflow run is nil", wf.workflow_run)
 				if wf.workflow_run != nil {
 					content := fmt.Sprintf("Github Action Job:%s,headBranch:%s,status:%s.\r\n", wf.workflow_run.name, wf.workflow_run.head_branch, wf.workflow_run.status)
 					msg := dingtalk.NewTextMessage().SetContent(content).SetAt([]string{"mobile", ""}, false)
