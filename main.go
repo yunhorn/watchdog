@@ -49,7 +49,7 @@ func main() {
 	client = dingtalk.NewClient(*token, *secret)
 
 	router := gin.Default()
-	router.GET("/webhook", func(c *gin.Context) {
+	router.POST("/webhook", func(c *gin.Context) {
 		fmt.Println("hello world")
 		wf := workflow{}
 		err := c.BindJSON(&wf)
