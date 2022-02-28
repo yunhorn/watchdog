@@ -43,9 +43,6 @@ func main() {
 		log.Fatalln("please set token or secret")
 	}
 
-	// https://oapi.dingtalk.com/robot/send?access_token=
-	// accessToken := "3df22b6d3f3d3a9fdb4e8df846d995b594c7610aee4699069d4900dcad834996"
-	// secret := "SEC4bc4ab892a8e23f16e6de0fd92b9ac5a0fe92a8fe63d06a74e79b3233c17c0d4"
 	client = dingtalk.NewClient(*token, *secret)
 
 	router := gin.Default()
@@ -57,15 +54,19 @@ func main() {
 			log.Println("parse.request.failed!", err)
 		} else {
 
-			log.Println("action is", wf.Action)
-			if wf.workflow_run != nil {
-				log.Println("action wf name:", wf.workflow_run.name)
-				log.Println("action wf status:", wf.workflow_run.status)
-				log.Println("action wf head_branch:", wf.workflow_run.head_branch)
+			if wf.Action != "" {
+				log.Println("action is", wf.Action)
+				if wf.workflow_run != nil {
+					content := fmt.Sprintf("Github Action Job:%s,headBranch:%s,status:%s.\r\n", wf.workflow_run.name, wf.workflow_run.head_branch, wf.workflow_run.status)
+					msg := dingtalk.NewTextMessage().SetContent(content).SetAt([]string{"mobile", ""}, false)
+					client.Send(msg)
+					log.Println("action wf name:", wf.workflow_run.name)
+					log.Println("action wf status:", wf.workflow_run.status)
+					log.Println("action wf head_branch:", wf.workflow_run.head_branch)
+				}
 			}
 		}
-		// msg := dingtalk.NewTextMessage().SetContent("测试文本&at 某个人").SetAt([]string{"mobile", ""}, false)
-		// client.Send(msg)
+
 		c.String(200, "success")
 	})
 	router.Run(":8181")
