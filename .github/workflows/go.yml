@@ -28,7 +28,7 @@ jobs:
       run: docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} -p ${{ secrets.GHCR_PASSWD }}
       
     - name: Build for container image
-      run: docker build -t ghcr.io/yunhorn/dingtalk-watchdog:v0.1.0 .
+      run: docker build -t ghcr.io/yunhorn/dingtalk-watchdog:latest .
       
     - name: Push for container image
-      run: docker push ghcr.io/yunhorn/dingtalk-watchdog:v0.1.0
+      run: docker push ghcr.io/yunhorn/dingtalk-watchdog:latest
