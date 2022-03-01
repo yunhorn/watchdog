@@ -10,23 +10,23 @@ import (
 )
 
 type workflow struct {
-	Action       string
-	workflow_run *workflowRun
+	Action      string      `json:"action"`
+	WorkflowRun workflowRun `json:"workflow_run,omitempty"`
 }
 
 type workflowRun struct {
-	name           string
-	head_branch    string
-	status         string
-	conclusion     string
-	html_url       string
-	run_started_at string
-	head_commit    headCommit
+	Name         string     `json:"name,omitempty"`
+	HeadBranch   string     `json:"head_branch"`
+	Status       string     `json:"status"`
+	Conclusion   string     `json:"conclusion"`
+	HtmlUrl      string     `json:"html_url"`
+	RunStartedAt string     `json:"run_started_at"`
+	Head_commit  headCommit `json:"head_commit"`
 }
 
 type headCommit struct {
-	message   string
-	timestamp string
+	Message   string `json:"message"`
+	Timestamp string `json:"timestamp"`
 }
 
 var (
@@ -48,7 +48,7 @@ func main() {
 	router := gin.Default()
 	router.POST("/webhook", func(c *gin.Context) {
 		fmt.Println("hello world")
-		wf := workflow{}
+		var wf workflow
 		err := c.BindJSON(&wf)
 		if err != nil {
 			log.Println("parse.request.failed!", err)
@@ -56,19 +56,16 @@ func main() {
 
 			if wf.Action != "" {
 				log.Println("action is", wf.Action)
-				log.Println("workflow run is nil", wf.workflow_run)
-				if wf.workflow_run != nil {
-					content := fmt.Sprintf("Github Action Job:%s,headBranch:%s,status:%s.\r\n", wf.workflow_run.name, wf.workflow_run.head_branch, wf.workflow_run.status)
+				log.Println("workflow run is nil", wf.WorkflowRun)
+				if wf.WorkflowRun.Name != "" {
+					content := fmt.Sprintf("Github Action Job:%s,headBranch:%s,status:%s.\r\n", wf.WorkflowRun.Name, wf.WorkflowRun.HeadBranch, wf.WorkflowRun.Status)
 					msg := dingtalk.NewTextMessage().SetContent(content).SetAt([]string{"mobile", ""}, false)
 					client.Send(msg)
-					log.Println("action wf name:", wf.workflow_run.name)
-					log.Println("action wf status:", wf.workflow_run.status)
-					log.Println("action wf head_branch:", wf.workflow_run.head_branch)
 				}
 			}
 		}
 
-		c.String(200, "success")
+		c.String(200, "success:"+wf.WorkflowRun.Name)
 	})
 	router.Run(":8181")
 }
