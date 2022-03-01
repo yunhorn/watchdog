@@ -50,11 +50,11 @@ func main() {
 
 		//X-GitHub-Event: workflow_run/workflow_job
 		// not we just work for workflow_run
-		// value := c.GetHeader("X-GitHub-Event")
-		// if value != "workflow_run" {
-		// 	c.String(200, "success")
-		// 	return
-		// }
+		value := c.GetHeader("X-GitHub-Event")
+		if value != "workflow_run" {
+			c.String(200, "success")
+			return
+		}
 
 		var wf workflow
 		err := c.BindJSON(&wf)
