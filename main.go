@@ -47,7 +47,16 @@ func main() {
 
 	router := gin.Default()
 	router.POST("/webhook", func(c *gin.Context) {
-		fmt.Println("hello world")
+
+		value := c.GetHeader("X-GitHub-Event")
+
+		//X-GitHub-Event: workflow_run/workflow_job
+		// not we just work for workflow_run
+		if value != "workflow_run" {
+			c.String(200, "success")
+			return
+		}
+
 		var wf workflow
 		err := c.BindJSON(&wf)
 		if err != nil {
