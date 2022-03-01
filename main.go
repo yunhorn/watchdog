@@ -48,14 +48,13 @@ func main() {
 	router := gin.Default()
 	router.POST("/webhook", func(c *gin.Context) {
 
-		value := c.GetHeader("X-GitHub-Event")
-
 		//X-GitHub-Event: workflow_run/workflow_job
 		// not we just work for workflow_run
-		if value != "workflow_run" {
-			c.String(200, "success")
-			return
-		}
+		// value := c.GetHeader("X-GitHub-Event")
+		// if value != "workflow_run" {
+		// 	c.String(200, "success")
+		// 	return
+		// }
 
 		var wf workflow
 		err := c.BindJSON(&wf)
@@ -67,8 +66,8 @@ func main() {
 				log.Println("action is", wf.Action)
 				log.Println("workflow run is nil", wf.WorkflowRun)
 				if wf.WorkflowRun.Name != "" {
-					content := fmt.Sprintf("Github Action Job:%s,headBranch:%s,status:%s.\r\n", wf.WorkflowRun.Name, wf.WorkflowRun.HeadBranch, wf.WorkflowRun.Status)
-					msg := dingtalk.NewTextMessage().SetContent(content).SetAt([]string{"mobile", ""}, false)
+					content := fmt.Sprintf("Github Action:%s,\n\n 分支:%s, \n\n状态:%s.\r \n\n最新提交信息:%s \n\n[详情](%s)", wf.WorkflowRun.Name, wf.WorkflowRun.HeadBranch, wf.WorkflowRun.Status, wf.WorkflowRun.Head_commit.Message, wf.WorkflowRun.HtmlUrl)
+					msg := dingtalk.NewMarkdownMessage().SetMarkdown("action通知", content).SetAt([]string{"mobile", ""}, false)
 					client.Send(msg)
 				}
 			}

@@ -1,8 +1,8 @@
 {
     "action":"completed",
     "workflow_run":{
-        "name":"hello",
-        "head_branch":"api",
+        "name":"hello测试",
+        "head_branch":"test",
         "status":"completed"
     }
 }
