@@ -66,7 +66,7 @@ func main() {
 				log.Println("action is", wf.Action)
 				log.Println("workflow run is nil", wf.WorkflowRun)
 				if wf.WorkflowRun.Name != "" {
-					content := fmt.Sprintf("Github Action:%s,\n\n 分支:%s, \n\n状态:%s.\r \n\n最新提交信息:%s \n\n[详情](%s)", wf.WorkflowRun.Name, wf.WorkflowRun.HeadBranch, wf.WorkflowRun.Status, wf.WorkflowRun.Head_commit.Message, wf.WorkflowRun.HtmlUrl)
+					content := fmt.Sprintf("Github Action:%s,\n\n 分支:%s, \n\nAction状态:%s.\r \n\nConclusion:%s\n\n最新提交信息:%s \n\n[详情](%s)", wf.WorkflowRun.Name, wf.WorkflowRun.HeadBranch, wf.WorkflowRun.Status, wf.WorkflowRun.Conclusion, wf.WorkflowRun.Head_commit.Message, wf.WorkflowRun.HtmlUrl)
 					msg := dingtalk.NewMarkdownMessage().SetMarkdown("action通知", content).SetAt([]string{"mobile", ""}, false)
 					client.Send(msg)
 				}
