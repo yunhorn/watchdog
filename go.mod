@@ -1,4 +1,4 @@
-module github.com/yunhorn/dingtalk-watchdog
+module github.com/yunhorn/watchdog
 
 go 1.17
 
